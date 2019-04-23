@@ -74,7 +74,7 @@ if __name__ == '__main__':
         my_listner = Listener(num_tweets_to_read, original_tweet_id)
 
         # write original tweet
-        orig_tweet_filename = my_listner.find_available_filename('original_tweet')
+        orig_tweet_filename = original_tweet_id + 'original_tweet.json'
         with open(orig_tweet_filename, 'w') as fp:
             fp.write(json.dumps(status_json))
 
