@@ -14,10 +14,6 @@ dependencies{
 }
 
 dependencies{
-  provided group: 'org.apache.storm', name: 'storm-core', version: '1.2.2'
-}
-
-dependencies{
   compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.7'
 }
 
