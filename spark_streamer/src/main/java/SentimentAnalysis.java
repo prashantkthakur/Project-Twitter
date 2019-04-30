@@ -51,16 +51,6 @@ public class SentimentAnalysis{
 		
 		return sentiment;
 	}
-
-	public int extractRetweet() {
-		int retweets = tweet.getRetweetCount();	
-		return retweets;
-	}
-	
-	public int extractFavorite() {
-		int favorites = tweet.getFavoriteCount();
-		return favorites;
-	}
 	
 	public String extractState(String location) {
 		String [] locationParts = location.split(",| ");
@@ -151,9 +141,5 @@ public class SentimentAnalysis{
 			
 		}
 		return "USA";
-	}
-	
-	public int extractFollowers() {
-		return tweet.getUser().getFollowersCount();
 	}
 }
