@@ -133,11 +133,11 @@ public class SentimentAnalysis{
 		if(states.containsValue(location.toUpperCase()))
 			return location.toUpperCase();
 		
-		for(String location: locationParts) {
-			if(states.containsKey(location.toLowerCase()))
-				return states.get(location.toLowerCase());
-			if(states.containsValue(location.toUpperCase()))
-				return location.toUpperCase();
+		for(String locationData: locationParts) {
+			if(states.containsKey(locationData.toLowerCase()))
+				return states.get(locationData.toLowerCase());
+			if(states.containsValue(locationData.toUpperCase()))
+				return locationData.toUpperCase();
 			
 		}
 		return "USA";
