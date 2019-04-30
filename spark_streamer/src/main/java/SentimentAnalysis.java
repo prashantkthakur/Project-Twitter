@@ -138,10 +138,10 @@ public class SentimentAnalysis{
 		states.put("wyoming","WY");
 		states.put("yukon territory","YT");
 		
-		if(states.containsKey(tweet.getUser().getLocation().toLowerCase()))
-			return states.get(tweet.getUser().getLocation().toLowerCase());
-		if(states.containsValue(tweet.getUser().getLocation().toUpperCase()))
-			return tweet.getUser().getLocation().toUpperCase();
+		if(states.containsKey(location.toLowerCase()))
+			return states.get(location.toLowerCase());
+		if(states.containsValue(location.toUpperCase()))
+			return location.toUpperCase();
 		
 		for(String location: locationParts) {
 			if(states.containsKey(location.toLowerCase()))
