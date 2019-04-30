@@ -39,7 +39,7 @@ public class TweetParser {
         this.replyCountStr = (String)retweetJson.get("reply_count");
         this.quoteCountStr = (String)retweetJson.get("quote_count");
         this.favoriteCount = Integer.parseInt((String)retweetJson.get("favorite_count"));
-        this.sensitive = Boolean.parseBoolean((String)retweetJson.get("favorite_count"));
+        this.sensitive = Boolean.parseBoolean((String)retweetJson.get("possibly_sensitive"));
         this.isQuoted = Boolean.parseBoolean((String)retweetJson.get("is_quote_status"));
         String infoUser = (String) jsonTweet.get("user");
         JSONObject userJson = (JSONObject) parser.parse(infoUser);
@@ -47,9 +47,9 @@ public class TweetParser {
         this.followersCount = Integer.parseInt((String) userJson.get("followers_count"));
         this.friendsCount = Integer.parseInt((String) userJson.get("friends_count"));
 
-
         computeSentiment();
         setLocation();
+        this.popularityScore = computePopularityScore();
 
     }
 
@@ -66,6 +66,11 @@ public class TweetParser {
         this.location = "USA";
     }
 
+    private double computePopularityScore() {
+        double likeToFollowerRatio = (double)getFavoriteCount() / (double)getFollowersCount();
+        double rtToFollowerRatio = (double)getRetweetCount() / (double)getFollowersCount();
+        return likeToFollowerRatio + rtToFollowerRatio;
+    }
 
     public class TitleInfo implements Serializable{
         public String getId() {
