@@ -1,0 +1,42 @@
+#!/usr/local/bin/bash
+if [ $1 = "zookeeper/" ]; then
+	if [ $2 = "start" ];then
+		for i in $(cat ./workers);
+		do
+			echo "Starting Zookeeper on $i..."
+			ssh $i '~pthakur/dist-project/zookeeper/bin/zkServer.sh start'
+		done
+	elif [ $2 = "stop" ];then
+	  for i in $(cat ./workers);
+	  do
+			echo "Stopping Zookeeper on $i..."
+	    ssh $i '~pthakur/dist-project/zookeeper/bin/zkServer.sh stop'
+	  done
+	else
+		echo "Usage: $0 zookeeper start|stop"
+	fi
+
+elif [ $1 = "kafka/" ];then
+	# Run kafka server.
+	if [ $2 = "start" ];then
+		id=0
+		for i in $(cat ./workers);
+		do
+			echo "Starting kafka on $i"
+			ssh $i "cd ~pthakur/dist-project/kafka/ && ./bin/kafka-server-start.sh -daemon ./config/server${id}.properties"
+			id=$((id+1))
+		done
+	elif [ $2 = "stop" ];then
+		id=0
+		for i in $(cat ./workers);
+		do
+			echo "Stopping kafka on $i"
+			ssh $i "cd ~pthakur/dist-project/kafka/ && ./bin/kafka-server-stop.sh -daemon ./config/server${id}.properties"
+			id=$((id+1))
+		done
+	else
+		echo "Usage: $0 kafka start|stop"
+	fi	
+
+fi
+	
