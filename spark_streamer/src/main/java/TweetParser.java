@@ -10,7 +10,7 @@ public class TweetParser {
     private int retweetCount;
     private String userId;
     private String stateInfo;
-    private double sentimentScore;
+    private int sentimentScore;
     private String text;
     private int followersCount;
     private int friendsCount;
@@ -46,7 +46,7 @@ public class TweetParser {
         this.userId = (String) userJson.get("id_str");
         this.followersCount = Integer.parseInt((String) userJson.get("followers_count"));
         this.friendsCount = Integer.parseInt((String) userJson.get("friends_count"));
-
+        
 
         computeSentiment();
         setLocation();
@@ -56,14 +56,16 @@ public class TweetParser {
     private void computeSentiment() {
         // Implement
         // Use this.text to get tweet.
-
-        this.sentimentScore = 1.0;
+    	SentimentAnalysis analysis = new SentimentAnalysis();
+    	
+        this.sentimentScore = analysis.extractTextSentiment(this.text);
     }
 
     private void setLocation(){
         // Set location to
-
-        this.location = "USA";
+    	SentimentAnalysis analysis = new SentimentAnalysis();
+    	
+        this.location = analysis.extractState(this.location);
     }
 
 
