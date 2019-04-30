@@ -46,7 +46,7 @@ public class TweetParser {
         this.userId = (String) userJson.get("id_str");
         this.followersCount = Integer.parseInt((String) userJson.get("followers_count"));
         this.friendsCount = Integer.parseInt((String) userJson.get("friends_count"));
-        
+        this.stateInfo = (String) jsonTweet.get("location");
 
         computeSentiment();
         setLocation();
@@ -65,7 +65,7 @@ public class TweetParser {
         // Set location to
     	SentimentAnalysis analysis = new SentimentAnalysis();
     	
-        this.location = analysis.extractState(this.location);
+        this.location = analysis.extractState(this.stateInfo);
     }
 
 
