@@ -1,9 +1,3 @@
-/*
-   Author : Nikhila Chireddy
-   Date : 10-24-2017
-*/
-
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -76,7 +70,7 @@ public class SentimentBolt extends BaseRichBolt {
 		
 		collector.emit(new Values(tweet, sentiment));
 		try {
-			fileWriter = new FileWriter("/s/chopin/a/grad/cnreddy/twitter/Sentiments.txt", true);
+			fileWriter = new FileWriter("./twitter/Sentiments.txt", true);
 			bw = new BufferedWriter(fileWriter);
 			bw.write(tweet.getText() + "\t" + sentiment + "\n");
 			bw.flush();
@@ -94,7 +88,7 @@ public class SentimentBolt extends BaseRichBolt {
 		// this.tweet = new ArrayList<Object>();
 
 		try {
-			fileWriter = new FileWriter("/s/chopin/a/grad/cnreddy/twitter/Sentiments.txt", true);
+			fileWriter = new FileWriter("./twitter/Sentiments.txt", true);
 			bw = new BufferedWriter(fileWriter);
 		} catch (Exception e) {
 			System.out.println("Error in writing to file");
