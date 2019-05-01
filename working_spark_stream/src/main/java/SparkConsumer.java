@@ -84,11 +84,18 @@ public class SparkConsumer {
             SQLContext sqlContext = JavaSQLContextSingleton.getInstance(rdd.context());
             Dataset<Row> tweetDS = sqlContext.createDataFrame(rdd, TweetParser.class);
             tweetDS.createOrReplaceTempView("tweet");
-						Dataset<Row> top = sqlContext.sql("SELECT id,retweetCount FROM tweet");
+	    Dataset<Row> top = sqlContext.sql("SELECT id,retweetCount FROM tweet");
             top.show();
+	    showReplies(sqlContext);
         });
-
     }
+
+	private static void showReplies(SQLContext sqlContext) {
+		Dataset<Row> top = sqlContext.sql("SELECT id,inResponseToID FROM tweet WHERE inResponseToID IS NOT NULL");
+		Dataset<Row> top2 = sqlContext.sql("SELECT id,viralScore,popularityScore FROM tweet");
+		top.show();
+		top2.show();
+	}
 
 }
 

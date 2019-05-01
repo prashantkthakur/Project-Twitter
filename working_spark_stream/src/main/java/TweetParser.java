@@ -20,6 +20,8 @@ public class TweetParser {
     private String quoteCountStr;
     private boolean isQuoted;
     double popularityScore;
+    double viralScore; 
+    private String inResponseToID;
 
 
     public void setPopularityScore(double popularityScore) {
@@ -51,6 +53,9 @@ public class TweetParser {
 				JSONParser parser = new JSONParser();
         JSONObject jsonTweet = (JSONObject) parser.parse(tweet);
         this.id = jsonTweet.get("id_str").toString();
+	if (jsonTweet.get("in_reply_to_status_id_str") != null) {
+		this.inResponseToID = jsonTweet.get("in_reply_to_status_id_str").toString();
+	}
         this.text = jsonTweet.get("text").toString();
         if (jsonTweet.containsKey("retweeted_status")) {
             String dataRetweet = jsonTweet.get("retweeted_status").toString();
@@ -70,7 +75,7 @@ public class TweetParser {
         computeSentiment();
         setLocation();
         this.popularityScore = computePopularityScore();
-
+	this.viralScore = computeViralScore();
     }
 
     private void computeSentiment() {
@@ -90,9 +95,13 @@ public class TweetParser {
 
     private double computePopularityScore() {
         double likeToFollowerRatio = (double)getFavoriteCount() / (double)getFollowersCount();
-        double rtToFollowerRatio = (double)getRetweetCount() / (double)getFollowersCount();
-        return likeToFollowerRatio + rtToFollowerRatio;
+        return likeToFollowerRatio;
     }
+
+	private double computeViralScore() {
+        	double rtToFollowerRatio = (double)getRetweetCount() / (double)getFollowersCount();
+		return rtToFollowerRatio;
+	}
 
         public String getId() {
             return id;
@@ -153,7 +162,13 @@ public class TweetParser {
             return popularityScore;
         }
 
+	public String getInResponseToID() {
+		return inResponseToID;
+	}
 
+	public double getViralScore() {
+		return viralScore;
+	}
 
 
 }
