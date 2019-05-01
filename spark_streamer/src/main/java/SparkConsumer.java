@@ -1,13 +1,17 @@
 import java.util.*;
 
+import org.apache.spark.SparkContext;
+import org.apache.spark.sql.SparkSession;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.sql.*;
+import org.apache.spark.sql.Dataset;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.spark.SparkConf;
 
+//import org.apache.spark.sql.SQLContext;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.*;
-
-
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.streaming.kafka010.ConsumerStrategies;
 import org.apache.spark.streaming.kafka010.KafkaUtils;
@@ -39,26 +43,27 @@ public class SparkConsumer {
                         LocationStrategies.PreferConsistent(),
                         ConsumerStrategies.<String, String> Subscribe(topics, kafkaParams));
 
-        JavaPairDStream<String, String> results = messages
-                .mapToPair(
-                        record -> new Tuple2<>(record.key(), record.value())
-                );
-        JavaDStream<String> lines = results
-                .map(
-                        tuple2 -> tuple2._2()
-                );
-//        JavaDStream<String> words = lines
-//                .flatMap(
-//                        x -> Arrays.asList(x.split("\\s+")).iterator()
-//                );
-//        JavaPairDStream<String, Integer> wordCounts = words
-//                .mapToPair(
-//                        s -> new Tuple2<>(s, 1)
-//                ).reduceByKey(
-//                        (i1, i2) -> i1 + i2
-//                );
+        JavaPairDStream<String, String> tweets = messages
+                .mapToPair(record -> new Tuple2<>(record.key(), record.value()));
 
-        lines.foreachRDD( x-> x.collect().stream().forEach(n-> System.out.println("item of list: "+n)));
+        taskExecutor(tweets);
+
+
+//        JavaDStream<TweetParser> tweetObj = tweets.map(tuple2 -> {
+//            TweetParser obj = new TweetParser(tuple2._2());
+//            return obj;
+//        });
+
+
+//        JavaDStream<String> words = lines
+//                .flatMap(x -> Arrays.asList(x.split("\\s+")).iterator());
+//        JavaPairDStream<String, Integer> wordCounts = words
+//                .mapToPair(s -> new Tuple2<>(s, 1)).reduceByKey((i1, i2) -> i1 + i2);
+//        lines.foreachRDD( x-> x.collect().stream().forEach(n-> System.out.println("item of list: "+n)));
+
+
+
+//        Dataset<Row> rankTable = sc.createDataFrame(out, HelperClass.PageRank.class).cache();
 
         ssc.start();
         ssc.awaitTermination();
@@ -66,4 +71,35 @@ public class SparkConsumer {
 
     }
 
+
+
+    private static void taskExecutor(JavaPairDStream<String, String> tweets){
+        JavaDStream<TweetParser> tweetObj = tweets.map(tuple2 -> {
+            TweetParser obj = new TweetParser(tuple2._2());
+            System.out.println("PKT TWEET:::"+obj.getId());
+            return obj;
+        });
+
+        tweetObj.foreachRDD(rdd->{
+            SQLContext sqlContext = JavaSQLContextSingleton.getInstance(rdd.context());
+            Dataset<Row> tweetDS = sqlContext.createDataFrame(rdd, TweetParser.class);
+            tweetDS.createOrReplaceTempView("tweet");
+            Dataset<Row> top = sqlContext.sql("SELECT id,retweetCount FROM tweet");
+            top.show();
+        });
+
+    }
+
+}
+
+
+class JavaSQLContextSingleton {
+    static private transient SQLContext instance = null;
+
+    static public SQLContext getInstance(SparkContext sparkContext) {
+        if (instance == null) {
+            instance = new SQLContext(sparkContext);
+        }
+        return instance;
+    }
 }
