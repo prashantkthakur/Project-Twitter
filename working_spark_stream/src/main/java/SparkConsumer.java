@@ -93,8 +93,18 @@ public class SparkConsumer {
 	private static void showReplies(SQLContext sqlContext) {
 		Dataset<Row> top = sqlContext.sql("SELECT id,inResponseToID FROM tweet WHERE inResponseToID IS NOT NULL");
 		Dataset<Row> top2 = sqlContext.sql("SELECT id,viralScore,popularityScore FROM tweet");
+		Dataset<Row> avgSentiment = sqlContext.sql("SELECT COUNT(location) AS NumberAtLocation, AVG(sentimentScore) AS AverageSentiment, location FROM tweet GROUP BY location");
+		Dataset<Row> mostPopular = sqlContext.sql("SELECT MAX(popularityScore) AS MostPopular, First(sentimentScore) AS Sentiment, First(location) AS Location FROM tweet");
+		Dataset<Row> maxRetweets = sqlContext.sql("SELECT MAX(retweetCount) AS NumberRetweets, First(sentimentScore) AS Sentiment, First(location) AS Location FROM tweet");
+		Dataset<Row> maxFaves = sqlContext.sql("SELECT MAX(favoriteCount) AS NumberFavorites, First(sentimentScore) AS Sentiment, First(location) AS Location FROM tweet");
+		Dataset<Row> negativeCount = sqlContext.sql("SELECT COUNT(sentimentScore) AS NumberNegative, location FROM tweet WHERE sentimentScore=-1 OR sentimentScore=-2 GROUP BY location");
 		top.show();
 		top2.show();
+		avgSentiment.show();
+		mostPopular.show();
+		maxRetweets.show();
+		maxFaves.show();
+		negativeCount.show();
 	}
 
 }
