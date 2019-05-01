@@ -1,7 +1,7 @@
 Authors:
-Jake Johnson
-Dawson Canby
-Prashant Thakur
+    Jake Johnson
+    Dawson Canby
+    Prashant Thakur
 
 To Compile and run program:
 
@@ -13,3 +13,6 @@ To Compile and run program:
 
 NOTE:
     You must have kafka and zookeeper set up on your machine in order to run this program.
+
+Dependencies:
+    to run push_tweets.py Pykafka is needed
