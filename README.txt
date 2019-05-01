@@ -1,3 +1,10 @@
+To Compile and run program:
 
-To Compile and run spark job:
-    After cd'ing into the directory that contains build.gradle typeing the comand gradle build should compile the program fine. Next typing the command ./submit-job.sh will submit the job to spark.
+1. Run ./create-link.sh, this will create the links for kafka and zookeeper
+2. Run ./run_cluster zookeeper/ start | stop
+3. Run ./run_cluster kafka/ start | stop
+4. Run gradle build and them ./submit-job.sh, this will start the spark job
+5. (Optional) For a graphic visualization of the data run graph.py
+
+NOTE:
+    You must have kafka and zookeeper set up on your machine in order to run this program.
