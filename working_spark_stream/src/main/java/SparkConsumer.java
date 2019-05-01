@@ -97,10 +97,11 @@ public class SparkConsumer {
 		Dataset<Row> top = sqlContext.sql("SELECT id,inResponseToID FROM tweet WHERE inResponseToID IS NOT NULL");
 		Dataset<Row> top2 = sqlContext.sql("SELECT id,viralScore,popularityScore FROM tweet");
 		Dataset<Row> avgSentiment = sqlContext.sql("SELECT COUNT(location) AS NumberAtLocation, AVG(sentimentScore) AS AverageSentiment, location FROM tweet GROUP BY location");
-		Dataset<Row> mostPopular = sqlContext.sql("SELECT MAX(popularityScore) AS MostPopular, First(sentimentScore) AS Sentiment, First(location) AS Location FROM tweet");
-		Dataset<Row> maxRetweets = sqlContext.sql("SELECT MAX(retweetCount) AS NumberRetweets, First(sentimentScore) AS Sentiment, First(location) AS Location FROM tweet");
-		Dataset<Row> maxFaves = sqlContext.sql("SELECT MAX(favoriteCount) AS NumberFavorites, First(sentimentScore) AS Sentiment, First(location) AS Location FROM tweet");
-		Dataset<Row> negativeCount = sqlContext.sql("SELECT COUNT(sentimentScore) AS NumberNegative, location FROM tweet WHERE sentimentScore=-1 OR sentimentScore=-2 GROUP BY location");
+		Dataset<Row> mostPopular = sqlContext.sql("SELECT MAX(popularityScore) AS MostPopular, First(id) AS id, First(sentimentScore) AS Sentiment, First(location) AS Location FROM tweet");
+		Dataset<Row> maxRetweets = sqlContext.sql("SELECT MAX(retweetCount) AS HighestNumberRetweets, First(id) AS id, First(sentimentScore) AS Sentiment, First(location) AS Location FROM tweet");
+		Dataset<Row> maxFaves = sqlContext.sql("SELECT MAX(favoriteCount) AS HighestNumberFavorites, First(id) AS id, First(sentimentScore) AS Sentiment, First(location) AS Location FROM tweet");
+		Dataset<Row> sentimentCounts = sqlContext.sql("SELECT COUNT(userID) AS NumberUsers, sentimentScore FROM tweet GROUP BY sentimentScore");
+		
 		top.show();
 		top2.show();
 		avgSentiment.show();
@@ -108,6 +109,7 @@ public class SparkConsumer {
 		maxRetweets.show();
 		maxFaves.show();
 		negativeCount.show();
+		sentimentCounts.show();
 	}
 
 }
