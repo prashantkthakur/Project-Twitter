@@ -114,7 +114,7 @@ public class SentimentAnalysis{
 
         if(sentiment > 2) {
             sentiment = 2;
-        } else if (sentiment < 2) {
+        } else if (sentiment < -2) {
             sentiment = -2;
         }
 
