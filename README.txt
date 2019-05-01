@@ -1,3 +1,8 @@
+Authors:
+Jake Johnson
+Dawson Canby
+Prashant Thakur
+
 To Compile and run program:
 
 1. Run ./create-link.sh, this will create the links for kafka and zookeeper
