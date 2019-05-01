@@ -17,6 +17,8 @@ import org.apache.spark.streaming.kafka010.ConsumerStrategies;
 import org.apache.spark.streaming.kafka010.KafkaUtils;
 import org.apache.spark.streaming.kafka010.LocationStrategies;
 import scala.Tuple2;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Level;
 
 
 public class SparkConsumer {
@@ -24,7 +26,8 @@ public class SparkConsumer {
 
     public static void main(String[] args) throws InterruptedException {
         SparkConf conf = new SparkConf().setMaster("local").setAppName("Kafka");
-
+        Logger.getLogger("org").setLevel(Level.OFF);
+        Logger.getLogger("akka").setLevel(Level.OFF);
         JavaSparkContext sc = new JavaSparkContext(conf);
         JavaStreamingContext ssc = new JavaStreamingContext(sc, Durations.seconds(10));
 
