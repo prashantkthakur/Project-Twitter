@@ -54,8 +54,8 @@ class Listener(tweepy.StreamListener):
 if __name__ == '__main__':
     try:
         # authenticate and setup api
-        auth = tweepy.OAuthHandler('g83Pgpo62RNdGE4K74908vnkO', 'b7i2VnIgqazNdperwevjDUzONDVBJACEhbffEHYwh1OILAHQvI')
-        auth.set_access_token('2377704086-Jf6k8y6KTy99qpvDIWZLpQFbm19ika3JrtZKF4q', 'I7T4H5H23MnS4SpXv5B2p5nUMHmaDQJ5fYxOmHCuuFmug')
+        auth = tweepy.OAuthHandler('g83Pgpo62xxxxE4K74908vnkO', 'b7ixxxxxxxerwevjDUzONDVBJACEhbffEHYwh1OILAHQvI')
+        auth.set_access_token('2377704086-Jxxxxx99qpvDIWZLpQFbm19ika3JrtZKF4q', 'I7T4H5H23xxxxxxp5nUMHmaDQJ5fYxOmHCuuFmug')
         api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
        
         #  parse program args
