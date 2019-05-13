@@ -14,10 +14,10 @@ from fetch_tweets.pylib import logger
 import database
 
 # Twitter application authentication info
-access_token = "919589727753216007-nRN64Q10pctwl1getZSd3thOSLyx8Wt"
-access_token_secret = "qiUgYOZ1LdMoiwNzRS78MdCKYCW97amgzp0wvCFI3vgkB"
-consumer_key = "KEQt2LvIwFvfpngI9kYCazRwP"
-consumer_secret = "pkVbufXuOI4paWdYVb4HPwqYJ0EPFwLagL21sGwllLPtQVqYJ7"
+access_token = "919589727753216007-nRN64Q1xxxxetZSd3thOSLyx8Wt"
+access_token_secret = "qiUgYOZ1LxxxxxxzRS78MdCKYCW97amgzp0wvCFI3vgkB"
+consumer_key = "KEQt2LvIwFvxxxxxCazRwP"
+consumer_secret = "pkVbufXuOI4paWdYVb4HPwqYJ0EPxxxxx1sGwllLPtQVqYJ7"
 
 # Database info
 tweet_db, tweet_db_host, tweet_db_port = ('log','localhost',27017)
